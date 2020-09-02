@@ -241,29 +241,29 @@
                 const search = new Search({ view: view });
                 view.ui.add(search, "top-right");
                 
-                            var coordsWidget = document.createElement("div");
-            coordsWidget.id = "coordsWidget";
-            coordsWidget.className = "esri-widget esri-component";
-            coordsWidget.style.padding = "7px 15px 5px";
-            view.ui.add(coordsWidget, "bottom-right");
+                const coordsWidget = document.createElement("div");
+                coordsWidget.id = "coordsWidget";
+                coordsWidget.className = "esri-widget esri-component";
+                coordsWidget.style.padding = "7px 15px 5px";
+                view.ui.add(coordsWidget, "bottom-right");
             
-            // lat, lon, zoom and scale の更新するfunction を定義
-            function showCoordinates(pt) {
-              var coords = "Lat/Lon " + pt.latitude.toFixed(3) + " " + pt.longitude.toFixed(3) +
-                  " | Scale 1:" + Math.round(view.scale * 1) / 1 +
-                  " | Zoom " + view.zoom;
-              coordsWidget.innerHTML = coords;
-            }
+                // lat, lon, zoom and scale の更新するfunction を定義
+                function showCoordinates(pt) {
+                    let coords = "Lat/Lon " + pt.latitude.toFixed(3) + " " + pt.longitude.toFixed(3) +
+                                " | Scale 1:" + Math.round(view.scale * 1) / 1 +
+                                " | Zoom " + view.zoom;
+                    coordsWidget.innerHTML = coords;
+                }
             
-            // view の動作がが終了したタイミングで中心座標を表示するためのイベントを追加 （例えば zoom, pan などのイベント）
-            view.watch(["stationary"], function() {
-              showCoordinates(view.center);
-            });
-
-            // クリックやムーブ時のマウスの座標を表示するためにイベントを追加
-            view.on(["pointer-down","pointer-move"], function(evt) {
-              showCoordinates(view.toMap({ x: evt.x, y: evt.y }));
-            });
+                // view の動作がが終了したタイミングで中心座標を表示するためのイベントを追加 （例えば zoom, pan などのイベント）
+                view.watch(["stationary"], function() {
+                    showCoordinates(view.center);
+                });
+                
+                // クリックやムーブ時のマウスの座標を表示するためにイベントを追加
+                view.on(["pointer-down","pointer-move"], function(evt) {
+                    showCoordinates(view.toMap({ x: evt.x, y: evt.y }));
+                });
                 
             })
             .catch(function(error) {
